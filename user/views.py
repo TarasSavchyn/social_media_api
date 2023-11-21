@@ -35,5 +35,6 @@ class LogoutView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):
+        request.auth.delete()
         logout(request)
-        return Response({"detail": "Successfully logged out."}, status=status.HTTP_200_OK)
+        return Response({"detail": "Successfully logged out and token invalidated."}, status=status.HTTP_200_OK)
