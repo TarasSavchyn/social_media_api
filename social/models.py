@@ -31,7 +31,7 @@ class Comment(models.Model):
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     bio = models.TextField(blank=True, default="")
-    following = models.ManyToManyField('self', symmetrical=False, related_name='my_followers', null=True, blank=True)
+    following = models.ManyToManyField('self', symmetrical=False, related_name='my_followers', blank=True)
 
     def __str__(self):
         return f"Profile of {self.user.email}"
