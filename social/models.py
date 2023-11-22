@@ -7,8 +7,12 @@ User = get_user_model()
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(blank=True)
-    following = models.ManyToManyField('self', symmetrical=False, related_name='my_followers')
-    followers = models.ManyToManyField('self', symmetrical=False, related_name='my_following')
+    following = models.ManyToManyField(
+        "self", symmetrical=False, related_name="my_followers"
+    )
+    followers = models.ManyToManyField(
+        "self", symmetrical=False, related_name="my_following"
+    )
 
     def __str__(self):
         return f"Profile of {self.user.email}"
@@ -25,7 +29,7 @@ class Post(models.Model):
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey('Post', on_delete=models.CASCADE)
+    post = models.ForeignKey("Post", on_delete=models.CASCADE)
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -35,7 +39,7 @@ class Comment(models.Model):
 
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey('Post', on_delete=models.CASCADE)
+    post = models.ForeignKey("Post", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
