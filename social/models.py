@@ -6,8 +6,10 @@ User = get_user_model()
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    bio = models.TextField(blank=True)
-    following = models.ManyToManyField('self', symmetrical=False, related_name='followers')
+    bio = models.TextField(blank=True, default="")
+    following = models.ManyToManyField(
+        "self", symmetrical=False, related_name="followers"
+    )
 
     def __str__(self):
         return f"Profile of {self.user.email}"
