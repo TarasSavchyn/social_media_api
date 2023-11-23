@@ -2,10 +2,11 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from social.models import Profile, Post, Like
+from social.models import Profile, Post, Like, Comment
 from social.serializers import (
     ProfileSerializer,
     PostSerializer,
+    CommentSerializer,
 )
 
 
@@ -120,4 +121,26 @@ class PostViewSet(viewsets.ModelViewSet):
 
         return Response(
             {"detail": "You have unliked this post."}, status=status.HTTP_200_OK
+        )
+
+    @action(detail=True, methods=["post"])
+    def add_comment(self, request, pk=None):
+        post = self.get_object()
+        serializer = CommentSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save(user=request.user, post=post)
+            post.comments.add(serializer.instance)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=["delete"])
+    def delete_comment(self, request, pk=None):
+        post = self.get_object()
+        user_comments = post.comments.filter(user=request.user)
+        user_comments.delete()
+        return Response(
+            {"detail": "User comments on this post deleted successfully."},
+            status=status.HTTP_200_OK,
         )

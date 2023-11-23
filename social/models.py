@@ -9,7 +9,9 @@ class Post(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name="post_likes", through="Like")
-    comments = models.ManyToManyField("Comment", blank=True, related_name="post_comments")
+    comments = models.ManyToManyField(
+        "Comment", blank=True, related_name="post_comments"
+    )
 
     def __str__(self):
         return f"Post by {self.user.email} at {self.created_at}"
