@@ -2,17 +2,18 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from social.models import Profile, Post, Like, Comment
+from social.models import Profile, Post, Like
 from social.serializers import (
     ProfileSerializer,
     PostSerializer,
-    CommentSerializer,
+    CommentSerializer, PostDetailSerializer,
 )
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
+
+
 
     @action(detail=True, methods=["post"])
     def follow(self, request, pk=None):
@@ -74,6 +75,12 @@ class ProfileViewSet(viewsets.ModelViewSet):
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+
+
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return PostDetailSerializer
+        return PostSerializer
 
     @action(detail=True, methods=["post"])
     def like(self, request, pk=None):
