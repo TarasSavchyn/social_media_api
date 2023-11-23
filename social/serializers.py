@@ -5,13 +5,18 @@ from .models import Profile, Post, Comment, Like
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ["id", "user", "bio", "following", ]
+        fields = [
+            "id",
+            "user",
+            "bio",
+            "following",
+        ]
 
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ["id", "user", "content", "created_at"]
+        fields = ["id", "user", "content", "created_at", "likes"]
 
 
 class CommentSerializer(serializers.ModelSerializer):

@@ -3,6 +3,7 @@ from django.db import models
 
 User = get_user_model()
 
+
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
@@ -12,6 +13,7 @@ class Post(models.Model):
     def __str__(self):
         return f"Post by {self.user.email} at {self.created_at}"
 
+
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -19,9 +21,6 @@ class Like(models.Model):
 
     def __str__(self):
         return f"Like by {self.user.email} on Post {self.post.id}"
-
-
-
 
 
 class Comment(models.Model):
@@ -33,10 +32,13 @@ class Comment(models.Model):
     def __str__(self):
         return f"Comment by {self.user.email} on Post {self.post.id}"
 
+
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     bio = models.TextField(blank=True, default="")
-    following = models.ManyToManyField('self', symmetrical=False, related_name='my_followers', blank=True)
+    following = models.ManyToManyField(
+        "self", symmetrical=False, related_name="my_followers", blank=True
+    )
 
     def __str__(self):
         return f"Profile of {self.user.email}"
