@@ -2,12 +2,10 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from social.models import Profile, Post, Comment, Like
+from social.models import Profile, Post, Like
 from social.serializers import (
     ProfileSerializer,
     PostSerializer,
-    CommentSerializer,
-    LikeSerializer,
 )
 
 

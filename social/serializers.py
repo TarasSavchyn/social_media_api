@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework import serializers
 from .models import Profile, Post, Comment, Like
 
@@ -16,7 +17,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ["id", "user", "content", "created_at", "likes"]
+        fields = ["id", "user", "content", "created_at", "likes", "comments"]
 
 
 class CommentSerializer(serializers.ModelSerializer):
