@@ -7,6 +7,7 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(User, related_name="liked_posts", through="Like")
 
     def __str__(self):
         return f"Post by {self.user.email} at {self.created_at}"
@@ -18,6 +19,10 @@ class Like(models.Model):
 
     def __str__(self):
         return f"Like by {self.user.email} on Post {self.post.id}"
+
+
+
+
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
