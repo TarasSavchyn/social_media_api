@@ -27,7 +27,15 @@ class PostListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ["id", "user", "content", "created_at", "likes_count", "comments", "image"]
+        fields = [
+            "id",
+            "user",
+            "content",
+            "created_at",
+            "likes_count",
+            "comments",
+            "image",
+        ]
 
 
 class PostDetailSerializer(serializers.ModelSerializer):
@@ -65,13 +73,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 class ProfileListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = [
-            "id",
-            "user",
-            "bio",
-            "following",
-            "image"
-        ]
+        fields = ["id", "user", "bio", "following", "image"]
 
 
 class ProfileDetailSerializer(serializers.ModelSerializer):

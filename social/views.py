@@ -1,8 +1,7 @@
-from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-
 from social.models import Profile, Post, Like
+from social.permissions import IsProfileOwnerOrReadOnly
 from social.serializers import (
     ProfileSerializer,
     PostListSerializer,
@@ -12,10 +11,16 @@ from social.serializers import (
     ProfileListSerializer,
     ProfileDetailSerializer,
 )
+from rest_framework import viewsets, status, permissions
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    permission_classes = [IsProfileOwnerOrReadOnly, permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
     def get_serializer_class(self):
         if self.action == "list":
@@ -83,6 +88,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
+    permission_classes = [IsProfileOwnerOrReadOnly, permissions.IsAuthenticated]
 
     def get_serializer_class(self):
         if self.action == "list":

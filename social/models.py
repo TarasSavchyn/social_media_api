@@ -7,6 +7,7 @@ from django.utils.text import slugify
 
 User = get_user_model()
 
+
 def social_image_file_path(instance, filename):
     _, extension = os.path.splitext(filename)
     filename = f"{slugify(instance.user.email)}-{uuid.uuid4()}{extension}"
@@ -22,11 +23,7 @@ class Post(models.Model):
     comments = models.ManyToManyField(
         "Comment", blank=True, related_name="comment_posts"
     )
-    image = models.ImageField(
-        upload_to=social_image_file_path,
-        null=True,
-        blank=True
-    )
+    image = models.ImageField(upload_to=social_image_file_path, null=True, blank=True)
 
     def __str__(self):
         return f"Post by {self.user.email} at {self.created_at}"
@@ -52,16 +49,14 @@ class Comment(models.Model):
 
 
 class Profile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="profile_user")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="profile_user"
+    )
     bio = models.TextField(blank=True, default="")
     following = models.ManyToManyField(
         "self", symmetrical=False, related_name="my_followers", blank=True
     )
-    image = models.ImageField(
-        upload_to=social_image_file_path,
-        null=True,
-        blank=True
-    )
+    image = models.ImageField(upload_to=social_image_file_path, null=True, blank=True)
 
     def __str__(self):
         return f"Profile of {self.user.email}"
