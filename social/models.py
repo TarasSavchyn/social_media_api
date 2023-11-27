@@ -22,6 +22,11 @@ class Post(models.Model):
     comments = models.ManyToManyField(
         "Comment", blank=True, related_name="comment_posts"
     )
+    image = models.ImageField(
+        upload_to=social_image_file_path,
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         return f"Post by {self.user.email} at {self.created_at}"
@@ -51,6 +56,11 @@ class Profile(models.Model):
     bio = models.TextField(blank=True, default="")
     following = models.ManyToManyField(
         "self", symmetrical=False, related_name="my_followers", blank=True
+    )
+    image = models.ImageField(
+        upload_to=social_image_file_path,
+        null=True,
+        blank=True
     )
 
     def __str__(self):
