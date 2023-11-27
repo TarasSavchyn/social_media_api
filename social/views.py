@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from social.models import Profile, Post, Like
@@ -99,6 +100,23 @@ class ProfileViewSet(viewsets.ModelViewSet):
             {"detail": "You have unfollowed this user."},
             status=status.HTTP_200_OK
         )
+
+
+
+
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="email",
+                type={"type": "string"},
+                description="Filter profiles by email.",
+                required=False,
+            )
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -209,3 +227,16 @@ class PostViewSet(viewsets.ModelViewSet):
             {"detail": "User comments on this post deleted successfully."},
             status=status.HTTP_200_OK,
         )
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="content",
+                type={"type": "string"},
+                description="Filter posts by content.",
+                required=False,
+            )
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
