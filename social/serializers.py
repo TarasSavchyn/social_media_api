@@ -62,7 +62,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ["id", "user", "bio", "following", "posts", "image"]
+        fields = ["id", "user", "bio", "following", "posts", "image", "full_name"]
 
     def get_posts(self, profile):
         posts = Post.objects.filter(user=profile.user)
@@ -73,7 +73,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 class ProfileListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ["id", "user", "bio", "following", "image"]
+        fields = ["id", "user", "bio", "following", "image", "full_name", "profile_followers"]
 
 
 class ProfileDetailSerializer(serializers.ModelSerializer):
@@ -81,7 +81,7 @@ class ProfileDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ["id", "user", "bio", "following", "posts", "image"]
+        fields = ["id", "user", "bio", "following", "posts", "image", "full_name", "profile_followers"]
 
     def get_posts(self, profile):
         posts = Post.objects.filter(user=profile.user)

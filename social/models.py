@@ -54,7 +54,7 @@ class Profile(models.Model):
     )
     bio = models.TextField(blank=True, default="")
     following = models.ManyToManyField(
-        "self", symmetrical=False, related_name="my_followers", blank=True
+        "self", symmetrical=False, related_name="profile_followers", blank=True
     )
     image = models.ImageField(upload_to=social_image_file_path, null=True, blank=True)
 
