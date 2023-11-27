@@ -29,7 +29,9 @@ class Migration(migrations.Migration):
                 (
                     "following",
                     models.ManyToManyField(
-                        blank=True, related_name="my_followers", to="social.profile"
+                        blank=True,
+                        related_name="my_followers",
+                        to="social.profile"
                     ),
                 ),
                 (
@@ -80,7 +82,8 @@ class Migration(migrations.Migration):
                 (
                     "post",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="social.post"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="social.post"
                     ),
                 ),
                 (
@@ -109,7 +112,8 @@ class Migration(migrations.Migration):
                 (
                     "post",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="social.post"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="social.post"
                     ),
                 ),
                 (

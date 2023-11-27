@@ -4,9 +4,8 @@ from social.models import Post
 
 User = get_user_model()
 
+
 @shared_task
 def create_scheduled_post(user_id, content):
     user = User.objects.get(id=user_id)
-
-    # Створення поста
-    post = Post.objects.create(user=user, content=content)
+    Post.objects.create(user=user, content=content)

@@ -23,7 +23,10 @@ class PostSerializer(serializers.ModelSerializer):
 
 class PostListSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=False)
-    likes_count = serializers.IntegerField(source="likes.count", read_only=True)
+    likes_count = serializers.IntegerField(
+        source="likes.count",
+        read_only=True
+    )
 
     class Meta:
         model = Post
@@ -40,8 +43,15 @@ class PostListSerializer(serializers.ModelSerializer):
 
 class PostDetailSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
-    likers = serializers.StringRelatedField(source="likes", many=True, read_only=True)
-    likes_count = serializers.IntegerField(source="likes.count", read_only=True)
+    likers = serializers.StringRelatedField(
+        source="likes",
+        many=True,
+        read_only=True
+    )
+    likes_count = serializers.IntegerField(
+        source="likes.count",
+        read_only=True
+    )
 
     class Meta:
         model = Post
@@ -62,7 +72,15 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ["id", "user", "bio", "following", "posts", "image", "full_name"]
+        fields = [
+            "id",
+            "user",
+            "bio",
+            "following",
+            "posts",
+            "image",
+            "full_name"
+        ]
 
     def get_posts(self, profile):
         posts = Post.objects.filter(user=profile.user)
@@ -73,7 +91,15 @@ class ProfileSerializer(serializers.ModelSerializer):
 class ProfileListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ["id", "user", "bio", "following", "image", "full_name", "profile_followers"]
+        fields = [
+            "id",
+            "user",
+            "bio",
+            "following",
+            "image",
+            "full_name",
+            "profile_followers",
+        ]
 
 
 class ProfileDetailSerializer(serializers.ModelSerializer):
@@ -81,7 +107,16 @@ class ProfileDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ["id", "user", "bio", "following", "posts", "image", "full_name", "profile_followers"]
+        fields = [
+            "id",
+            "user",
+            "bio",
+            "following",
+            "posts",
+            "image",
+            "full_name",
+            "profile_followers",
+        ]
 
     def get_posts(self, profile):
         posts = Post.objects.filter(user=profile.user)

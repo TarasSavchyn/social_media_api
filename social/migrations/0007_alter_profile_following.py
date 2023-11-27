@@ -13,7 +13,9 @@ class Migration(migrations.Migration):
             model_name="profile",
             name="following",
             field=models.ManyToManyField(
-                blank=True, related_name="profile_followers", to="social.profile"
+                blank=True,
+                related_name="profile_followers",
+                to="social.profile"
             ),
         ),
     ]

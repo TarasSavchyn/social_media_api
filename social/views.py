@@ -14,6 +14,7 @@ from social.serializers import (
 from rest_framework import viewsets, status
 from social_media.tasks import create_scheduled_post
 
+
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
@@ -48,7 +49,9 @@ class ProfileViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_401_UNAUTHORIZED,
             )
         current_user_profile = Profile.objects.get(user=self.request.user)
-        if current_user_profile.following.filter(pk=user_to_follow_profile.id).exists():
+        if current_user_profile.following.filter(
+                pk=user_to_follow_profile.id
+        ).exists():
             return Response(
                 {"detail": "You are already following this user."},
                 status=status.HTTP_400_BAD_REQUEST,
@@ -60,7 +63,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
             )
         current_user_profile.following.add(user_to_follow_profile)
         return Response(
-            {"detail": "You are now following this user."}, status=status.HTTP_200_OK
+            {"detail": "You are now following this user."},
+            status=status.HTTP_200_OK
         )
 
     @action(detail=True, methods=["post"])
@@ -92,7 +96,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
         current_user_profile.following.remove(user_to_unfollow_profile)
 
         return Response(
-            {"detail": "You have unfollowed this user."}, status=status.HTTP_200_OK
+            {"detail": "You have unfollowed this user."},
+            status=status.HTTP_200_OK
         )
 
 
@@ -119,19 +124,20 @@ class PostViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=["post"])
     def create_scheduled_post(self, request):
-
         content = request.data.get("content")
         delay = int(request.query_params.get("delay", 0))
 
         create_scheduled_post.apply_async(
-            kwargs={'user_id': request.user.id, 'content': content},
+            kwargs={
+                "user_id": request.user.id,
+                "content": content},
             countdown=delay
         )
 
-        return Response({"detail": "Post creation scheduled."}, status=status.HTTP_202_ACCEPTED)
-
-
-
+        return Response(
+            {"detail": "Post creation scheduled."},
+            status=status.HTTP_202_ACCEPTED
+        )
 
     @action(detail=True, methods=["post"])
     def like(self, request, pk=None):
@@ -178,7 +184,8 @@ class PostViewSet(viewsets.ModelViewSet):
         like.delete()
 
         return Response(
-            {"detail": "You have unliked this post."}, status=status.HTTP_200_OK
+            {"detail": "You have unliked this post."},
+            status=status.HTTP_200_OK
         )
 
     @action(detail=True, methods=["post"])

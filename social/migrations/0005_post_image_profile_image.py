@@ -14,14 +14,18 @@ class Migration(migrations.Migration):
             model_name="post",
             name="image",
             field=models.ImageField(
-                blank=True, null=True, upload_to=social.models.social_image_file_path
+                blank=True,
+                null=True,
+                upload_to=social.models.social_image_file_path
             ),
         ),
         migrations.AddField(
             model_name="profile",
             name="image",
             field=models.ImageField(
-                blank=True, null=True, upload_to=social.models.social_image_file_path
+                blank=True,
+                null=True,
+                upload_to=social.models.social_image_file_path
             ),
         ),
     ]
