@@ -17,7 +17,7 @@ from rest_framework import viewsets, status, permissions
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = [IsProfileOwnerOrReadOnly, permissions.IsAuthenticated]
+    permission_classes = [IsProfileOwnerOrReadOnly, ]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -88,7 +88,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
-    permission_classes = [IsProfileOwnerOrReadOnly, permissions.IsAuthenticated]
+    permission_classes = [IsProfileOwnerOrReadOnly, ]
 
     def get_serializer_class(self):
         if self.action == "list":
