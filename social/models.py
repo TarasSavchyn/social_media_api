@@ -9,7 +9,7 @@ User = get_user_model()
 
 def social_image_file_path(instance, filename):
     _, extension = os.path.splitext(filename)
-    filename = f"{slugify(instance.full_name)}-{uuid.uuid4()}{extension}"
+    filename = f"{slugify(instance.user.email)}-{uuid.uuid4()}{extension}"
 
     return os.path.join("uploads", "social", filename)
 
@@ -52,7 +52,7 @@ class Comment(models.Model):
 
 
 class Profile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="profile_user")
     bio = models.TextField(blank=True, default="")
     following = models.ManyToManyField(
         "self", symmetrical=False, related_name="my_followers", blank=True
