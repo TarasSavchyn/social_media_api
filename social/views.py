@@ -101,10 +101,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
             status=status.HTTP_200_OK
         )
 
-
-
-
-
     @extend_schema(
         parameters=[
             OpenApiParameter(
