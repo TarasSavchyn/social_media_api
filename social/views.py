@@ -11,8 +11,8 @@ from social.serializers import (
     ProfileListSerializer,
     ProfileDetailSerializer,
 )
-from rest_framework import viewsets, status, permissions
-
+from rest_framework import viewsets, status
+from social_media.tasks import create_scheduled_post
 
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
@@ -116,6 +116,22 @@ class PostViewSet(viewsets.ModelViewSet):
         if self.action == "retrieve":
             return PostDetailSerializer
         return PostSerializer
+
+    @action(detail=False, methods=["post"])
+    def create_scheduled_post(self, request):
+
+        content = request.data.get("content")
+        delay = int(request.query_params.get("delay", 0))
+
+        create_scheduled_post.apply_async(
+            kwargs={'user_id': request.user.id, 'content': content},
+            countdown=delay
+        )
+
+        return Response({"detail": "Post creation scheduled."}, status=status.HTTP_202_ACCEPTED)
+
+
+
 
     @action(detail=True, methods=["post"])
     def like(self, request, pk=None):
