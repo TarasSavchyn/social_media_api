@@ -17,7 +17,9 @@ from rest_framework import viewsets, status, permissions
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = [IsProfileOwnerOrReadOnly, ]
+    permission_classes = [
+        IsProfileOwnerOrReadOnly,
+    ]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -28,6 +30,14 @@ class ProfileViewSet(viewsets.ModelViewSet):
         if self.action == "retrieve":
             return ProfileDetailSerializer
         return ProfileSerializer
+
+    def get_queryset(self):
+        queryset = Profile.objects.all()
+        # filtering by email
+        email = self.request.query_params.get("email")
+        if email:
+            queryset = queryset.filter(user__email__icontains=email)
+        return queryset
 
     @action(detail=True, methods=["post"])
     def follow(self, request, pk=None):
@@ -88,7 +98,17 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
-    permission_classes = [IsProfileOwnerOrReadOnly, ]
+    permission_classes = [
+        IsProfileOwnerOrReadOnly,
+    ]
+
+    def get_queryset(self):
+        queryset = Post.objects.all()
+        # filtering by content
+        content = self.request.query_params.get("content")
+        if content:
+            queryset = queryset.filter(content__icontains=content)
+        return queryset
 
     def get_serializer_class(self):
         if self.action == "list":
