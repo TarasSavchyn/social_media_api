@@ -43,7 +43,7 @@ and viewsets, and following best practices for API design and documentation.
 ## Using
 Clone the repository from GitHub:
 ```sh
-$ git clone https://github.com/TarasSavchyn/theatre_API.git
+$ git clone https://github.com/TarasSavchyn/social_media_api.git
 ```
 Once you've cloned the repository, navigate into the repository.
 
