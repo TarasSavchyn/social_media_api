@@ -39,3 +39,102 @@ well-structured and well-documented RESTful API using Django and Django REST fra
 This task will test the junior DRF developer's skills in building RESTful APIs, 
 handling authentication and permissions, working with models, serializers, views, 
 and viewsets, and following best practices for API design and documentation.
+
+## Using
+Clone the repository from GitHub:
+```sh
+$ git clone https://github.com/TarasSavchyn/theatre_API.git
+```
+Once you've cloned the repository, navigate into the repository.
+
+Create a virtual environment and activate it using the following commands:
+```sh
+$ python3 -m venv venv
+$ source venv/bin/activate
+```
+
+Create file ".env" with the following content:
+```python
+POSTGRES_ENGINE=POSTGRES_ENGINE
+POSTGRES_NAME=POSTGRES_NAME
+POSTGRES_USER=POSTGRES_USER
+POSTGRES_PASSWORD=POSTGRES_PASSWORD
+POSTGRES_HOST=POSTGRES_HOST
+POSTGRES_PORT=POSTGRES_PORT
+SECRET_KEY=SECRET_KEY
+```
+
+Once you've activated your virtual environment install your python packages by running:
+```sh
+$ pip install -r requirements.txt
+```
+Now let's migrate our django project:
+```sh
+$ python3 manage.py migrate
+```
+If there are no hitches here you should now be able to open your server by running:
+```sh
+$ python3 manage.py runserver
+```
+Go to the web browser and enter http://127.0.0.1:8000/api/social/
+
+
+## Docker
+Create file ".env" with the following content:
+```python
+POSTGRES_ENGINE=POSTGRES_ENGINE
+POSTGRES_NAME=POSTGRES_NAME
+POSTGRES_USER=POSTGRES_USER
+POSTGRES_PASSWORD=POSTGRES_PASSWORD
+POSTGRES_HOST=POSTGRES_HOST
+POSTGRES_PORT=POSTGRES_PORT
+SECRET_KEY=SECRET_KEY
+
+CELERY_BROKER_URL=CELERY_BROKER_URL
+CELERY_RESULT_BACKEND=CELERY_RESULT_BACKEND
+```
+After that create the file "docker-compose.yml"
+```python
+version: '3'
+services:
+  # PostgreSQL
+  postgres:
+    image: postgres:latest
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    networks:
+      - mynetwork
+  # Redis
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - mynetwork
+  # Django
+  web:
+    image: savik1992/social_media:latest
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - mynetwork
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+networks:
+  mynetwork:
+    driver: bridge
+```
+Then open your terminal and navigate to the directory you wish to store the project and run the following commands:
+```sh
+$ docker push savik1992/social_media
+$ docker-compose up
+```
+Welcome, the application is ready to use at url http://127.0.0.1:8000/admin/social/
+
