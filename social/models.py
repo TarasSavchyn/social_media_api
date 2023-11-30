@@ -24,14 +24,17 @@ class Post(models.Model):
         related_name="liked_posts",
         through="Like"
     )
-    comments = models.ManyToManyField(
-        "Comment", blank=True, related_name="comment_posts"
+
+    comments = models.ForeignKey(
+        "Comment", on_delete=models.CASCADE, blank=True, null=True, related_name="comment_post"
     )
     image = models.ImageField(
         upload_to=social_image_file_path,
         null=True, blank=True
     )
 
+    def __str__(self):
+        return f"Post by {self.user.email} at {self.created_at}"
     def __str__(self):
         return f"Post by {self.user.email} at {self.created_at}"
 
