@@ -207,12 +207,12 @@ class PostViewSet(viewsets.ModelViewSet):
         post = self.get_object()
         serializer = CommentSerializer(data=request.data)
 
-        if serializer.is_valid():
-            serializer.save(user=request.user, post=post)
-            post.comments.add(serializer.instance)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(user=request.user, post=post)
+        post.comments.add(serializer.instance)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
     @action(detail=True, methods=["delete"])
     def delete_comment(self, request, pk=None):

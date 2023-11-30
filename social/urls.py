@@ -6,6 +6,6 @@ router.register(r"profiles", ProfileViewSet)
 router.register(r"posts", PostViewSet)
 
 
-urlpatterns = [] + router.urls
+urlpatterns = router.urls
 
 app_name = "social"
