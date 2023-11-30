@@ -16,7 +16,7 @@ def social_image_file_path(instance, filename):
 
 
 class Post(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(
@@ -59,7 +59,6 @@ class Comment(models.Model):
 
 
 class Profile(models.Model):
-    # Зміна тут: OneToOneField замість ForeignKey
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name="profile_user"
     )
