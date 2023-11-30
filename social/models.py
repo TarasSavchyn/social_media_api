@@ -59,7 +59,8 @@ class Comment(models.Model):
 
 
 class Profile(models.Model):
-    user = models.ForeignKey(
+    # Зміна тут: OneToOneField замість ForeignKey
+    user = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name="profile_user"
     )
     bio = models.TextField(blank=True, default="")
