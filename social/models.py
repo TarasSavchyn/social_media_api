@@ -35,8 +35,7 @@ class Post(models.Model):
 
     def __str__(self):
         return f"Post by {self.user.email} at {self.created_at}"
-    def __str__(self):
-        return f"Post by {self.user.email} at {self.created_at}"
+
 
 
 class Like(models.Model):
@@ -60,7 +59,7 @@ class Comment(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(
-        User, on_delete=models.CASCADE, related_name="profile_user"
+        User, on_delete=models.CASCADE, related_name="user_profile"
     )
     bio = models.TextField(blank=True, default="")
     following = models.ManyToManyField(
